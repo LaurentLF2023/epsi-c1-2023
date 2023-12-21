@@ -1,10 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Parking à Nantes</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+<body id="app">
+    <header class="bg-blue-100 mb-6 py-6">
+        <h1 class="text-xl font-bold text-center">
+            Disponibilité des parkings à Nantes
+        </h1>
+    </header>
+    <div v-for="parking in parkings"  class=" m-8 bg-amber-200 max-w-sm rounded overflow-hidden shadow-lg">
+        <h3 class="bg-amber-500 text-center">{{parking.grp_nom}}</h3>
+        <div class="bg-blue-200">
+            <span class="inline-flex space-between">
+                <p>Nombre de places disponibles:</p>
+                <p :class="{'bg-red-400': parking.disponibilite < parking.grp_exploitation/10}">{{parking.disponibilite}}</p>
+            </span>
+            <span>
+                <p>Nombre de places totale:</p>
+                <p>{{parking.grp_exploitation}}</p>
+            </span>
+        </div>
+    </div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue@3"></script>
+<script>
+    const apiURL =
+        "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_parkings-publics-nantes-disponibilites/records?limit=31"
+   //const config{};
 
+    Vue.createApp({
+        data() {
+            return {
+                parkings: [],
+            }
+        },
+
+        created: function () {
+            this.fetchDataPromise();
+        },
+
+        wartch: {
+            parkings: "fetchDataPromise",
+        },
+        methods: {
+            fetchDataPromise: async function () {
+                try {
+                    const response = await axios ({
+                        method: 'get',
+                        url: apiURL,
+                    })
+                    console.log(response.data.results);
+                    this.parkings = response.data.results
+                }
+                catch(error) {
+                    console.log("appel api en erreur")
+                    console.log(error);
+                }
+            },
+        },
+    }).mount('#app');
+</script>
 </body>
 </html>
