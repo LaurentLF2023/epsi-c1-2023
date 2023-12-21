@@ -14,13 +14,18 @@
     <div v-for="parking in parkings"  class=" m-8 bg-amber-200 max-w-sm rounded overflow-hidden shadow-lg">
         <h3 class="bg-amber-500 text-center">{{parking.grp_nom}}</h3>
         <div class="bg-blue-200">
-            <span class="inline-flex space-between">
-                <p>Nombre de places disponibles:</p>
-                <p :class="{'bg-red-400': parking.disponibilite < parking.grp_exploitation/10}">{{parking.disponibilite}}</p>
+            <span
+                :class="{'bg-red-400': parking.disponibilite < parking.grp_exploitation/10}"
+                class="flex justify-between"
+            >
+                <p class="ml-2">Nombre de places disponibles:</p>
+                <p class="mr-4">
+                    {{parking.disponibilite}}
+                </p>
             </span>
-            <span>
-                <p>Nombre de places totale:</p>
-                <p>{{parking.grp_exploitation}}</p>
+            <span class="flex justify-between">
+                <p class="ml-2">Nombre de places totale:</p>
+                <p class="mr-4">{{parking.grp_exploitation}}</p>
             </span>
         </div>
     </div>
